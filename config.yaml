@@ -1,0 +1,18 @@
+model:
+  - name: batch_size
+    value: 32
+  - name: sequence_length
+    value: 32
+  - name: d_model
+    value: 64
+  - name: n_layers
+    value: 2
+  - name: n_heads
+    value: 4
+
+training:
+  - name: learning_rate
+    value: 0.001
+  - name: num_epochs
+    value: 30
+  

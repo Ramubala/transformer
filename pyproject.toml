@@ -1,0 +1,15 @@
+[project]
+name = "transformer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "black>=26.5.1",
+    "numpy>=2.4.4",
+    "pyyaml>=6.0.3",
+    "torch>=2.11.0",
+]
+
+[[tool.uv.index]]
+url = "https://download.pytorch.org/whl/cu128"
