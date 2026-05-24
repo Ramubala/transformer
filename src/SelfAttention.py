@@ -35,6 +35,9 @@ class SelfAttention(nn.Module):
         self.key = nn.Linear(embedding_dim, head_size)
         self.value = nn.Linear(embedding_dim, head_size)
 
+        mask = torch.tril(torch.ones(block_size, block_size))
+        self.register_buffer("mask", mask)
+
     def forward(self, x):
         Q = self.query(x)  # (B, S, E) -> (B, S, H)
         K = self.key(x)  # (B, S, E) -> (B, S, H)
@@ -44,13 +47,7 @@ class SelfAttention(nn.Module):
             self.embedding_dim**0.5
         )  # (B, S, H) @ (B, H, S) -> (B, S, S)
 
-        mask = torch.tril(
-            torch.ones(self.block_size, self.block_size)
-        )  # (S, S) -> lower triangular matrix
-        mask = mask.to(
-            attention_scores.device
-        )  # Move mask to the same device as attention scores
-        attention_scores = attention_scores.masked_fill(mask == 0, float("-inf"))
+        attention_scores = attention_scores.masked_fill(self.mask == 0, float("-inf"))
         attention_weights = torch.softmax(attention_scores, dim=-1)
 
         output = torch.matmul(attention_weights, V)
